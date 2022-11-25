@@ -1,5 +1,7 @@
 # rename-obj-map
 
+[![codecov](https://codecov.io/gh/KarimAziev/rename-obj-map/branch/main/graph/badge.svg?token=IPLDMATHQU)](https://codecov.io/gh/KarimAziev/rename-obj-map)
+
 Rename object keys with inferable types.
 
 ## renameKeys (renameMap, obj)
