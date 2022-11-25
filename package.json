@@ -9,7 +9,7 @@
     "start": "tsc -w",
     "test": "jest --coverage",
     "prebuild": "rimraf lib",
-    "prepublishOnly": "build"
+    "prepublishOnly": "npm run-script build"
   },
   "repository": {
     "type": "git",
