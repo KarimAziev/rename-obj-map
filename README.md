@@ -4,12 +4,28 @@
 
 Rename object keys with inferable types.
 
-## renameKeys (renameMap, obj)
+## Install
+
+```bash
+npm i rename-obj-map
+```
+
+Or
+
+```bash
+yarn add rename-obj-map
+```
+
+## Usage
+
+### renameKeys (renameMap, obj)
 
 Creates a new `obj` with the own properties of the provided object, but
 the keys renamed according to `renameMap`.
 
 ```typescript
+import { renameKeys } from 'rename-obj-map';
+
 renameKeys({ _id: 'id' }, { _id: 1234578 });
 // → { id: 1234578 }
 // → infer as { id: number }
@@ -29,11 +45,13 @@ renameKeys(remap, obj);
 // → infer as { id: number }
 ```
 
-## curriedRenameKeys (renameMap)→(obj)
+### curriedRenameKeys (renameMap)→(obj)
 
 Curried version of `renameKeys`.
 
 ```typescript
+import { curriedRenameKeys } from 'rename-obj-map';
+
 const res0 = curriedRenameKeys({ _id: 'id' })({ _id: 1234578 });
 // → { id: 1234578 }
 // → infer as { id: number }
