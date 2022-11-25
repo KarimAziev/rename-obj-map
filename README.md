@@ -32,21 +32,21 @@ renameKeys(remap, obj);
 Curried version of `renameKeys`.
 
 ```typescript
-curriedRenameKeys({ _id: 'id' })({ _id: 1234578 });
+const res0 = curriedRenameKeys({ _id: 'id' })({ _id: 1234578 });
 // → { id: 1234578 }
 // → infer as { id: number }
 
 enum remapEnums {
   _id = 'id',
 }
-curriedRenameKeys(remapEnums)({ _id: 1234578 });
+const res1 = curriedRenameKeys(remapEnums)({ _id: 1234578 });
 // → { id: 1234578 }
 // → infer as { id: number }
 
 const remap = { _id: 'id' } as const;
 const obj = { _id: 1234578 };
 
-curriedRenameKeys(remap, obj);
+const res2 = curriedRenameKeys(remap)(obj);
 // → { id: 1234578 }
 // → infer as { id: number }
 ```
