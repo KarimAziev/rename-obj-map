@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "start": "tsc -w",
-    "test": "jest",
+    "test": "jest --coverage",
     "prebuild": "rimraf lib",
     "prepublishOnly": "npm run tsc"
   },
