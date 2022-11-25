@@ -2,7 +2,6 @@ language: node_js
 node_js:
   - "14"
   - "16"
-  - "18"
 
 cache: npm
 
@@ -10,7 +9,7 @@ script:
   - npm test
 
 after_success:
-  - curl https://uploader.codecov.io/verification.gpg | gpg --no-default-keyring --keyring trustedkeys.gpg --import # One-time step
+  - curl https://uploader.codecov.io/verification.gpg | gpg --no-default-keyring --keyring trustedkeys.gpg --import
   - curl -Os https://uploader.codecov.io/latest/linux/codecov
   - curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM
   - curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM.sig
