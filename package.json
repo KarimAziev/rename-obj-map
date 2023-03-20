@@ -1,12 +1,18 @@
 {
   "name": "rename-obj-map",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Inferrable rename object keys.",
   "unpkg": "dist/index.js",
   "module": "es/index.js",
   "main": "lib/index.js",
   "types": "types/index.d.ts",
-  "files": ["dist", "lib", "es", "src", "types"],
+  "files": [
+    "dist",
+    "lib",
+    "es",
+    "src",
+    "types"
+  ],
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "check-types": "tsc --noEmit",
@@ -26,7 +32,12 @@
     "type": "git",
     "url": "git+https://github.com/KarimAziev/rename-obj-map.git"
   },
-  "keywords": ["object", "rename", "typescript", "infer"],
+  "keywords": [
+    "object",
+    "rename",
+    "typescript",
+    "infer"
+  ],
   "author": "Karim Aziiev <karim.aziiev@gmail.com>",
   "license": "GPL-3.0-or-later",
   "bugs": {
