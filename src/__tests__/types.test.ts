@@ -1,9 +1,9 @@
 import { expectTypeOf } from 'expect-type';
-import { renameKeys, curriedRenameKeys } from '..';
+import { renameKeys } from '..';
 
 let obj: { _id: number; name: string; age: number; active: boolean };
 
-describe('Testing narrowing', () => {
+describe('Testing narrowing with two params', () => {
   beforeEach(() => {
     obj = { _id: 23, name: 'John', age: 23, active: true };
   });
@@ -30,7 +30,7 @@ describe('Testing narrowing', () => {
       const res1 = renameKeys(remap, obj);
       const res2 = renameKeys<{ _id: 'id' }, typeof obj>(
         remap2 as { _id: 'id' },
-        obj
+        obj,
       );
       const res3 = renameKeys(remap2, obj);
       expectTypeOf(res1).toHaveProperty('id').toBeNumber();
@@ -55,7 +55,7 @@ describe('Testing narrowing', () => {
       const remap = { _id: 'id', active: 'status' };
       const res1 = renameKeys<{ _id: 'id'; active: 'status' }, typeof obj>(
         remap as { _id: 'id'; active: 'status' },
-        obj
+        obj,
       );
       expectTypeOf(res1).toHaveProperty('id').toBeNumber();
       expectTypeOf(res1).toHaveProperty('name').toBeString();
@@ -142,25 +142,19 @@ describe('Testing narrowing', () => {
     });
   });
 
-  describe('curriedRenameKeys should', () => {
+  describe('curried renameKeys should', () => {
     test('infer inline args', () => {
-      expectTypeOf(
-        curriedRenameKeys({ _id: 'id' })({ _id: 1234578 })
-      ).toEqualTypeOf<{
+      expectTypeOf(renameKeys({ _id: 'id' })({ _id: 1234578 })).toEqualTypeOf<{
         id: number;
       }>({ id: 1234578 } as const);
 
-      expectTypeOf(curriedRenameKeys({ _id: 'id' })({ _id: 1234578 }))
+      expectTypeOf(renameKeys({ _id: 'id' })({ _id: 1234578 }))
         .toHaveProperty('id')
         .toBeNumber();
-      expectTypeOf(
-        curriedRenameKeys({ _id: 'id' })({ _id: 1234578, name: 'bb' })
-      )
+      expectTypeOf(renameKeys({ _id: 'id' })({ _id: 1234578, name: 'bb' }))
         .toHaveProperty('id')
         .toBeNumber();
-      expectTypeOf(
-        curriedRenameKeys({ _id: 'id' })({ _id: 1234578, name: 'bb' })
-      )
+      expectTypeOf(renameKeys({ _id: 'id' })({ _id: 1234578, name: 'bb' }))
         .toHaveProperty('name')
         .toBeString();
     });
@@ -168,11 +162,11 @@ describe('Testing narrowing', () => {
     test('work with variables', () => {
       const remap = { _id: 'id', active: 'status' } as const;
       const remap2 = { _id: 'id' };
-      const res1 = curriedRenameKeys(remap)(obj);
-      const res2 = curriedRenameKeys<{ _id: 'id' }>(remap2 as { _id: 'id' })<
+      const res1 = renameKeys(remap)(obj);
+      const res2 = renameKeys<{ _id: 'id' }>(remap2 as { _id: 'id' })<
         typeof obj
       >(obj);
-      const res3 = curriedRenameKeys(remap2)(obj);
+      const res3 = renameKeys(remap2)(obj);
       expectTypeOf(res1).toHaveProperty('id').toBeNumber();
       expectTypeOf(res1).toHaveProperty('name').toBeString();
       expectTypeOf(res1).toHaveProperty('age').toBeNumber();
@@ -183,7 +177,7 @@ describe('Testing narrowing', () => {
 
     test('accept generic args', () => {
       const remap2 = { _id: 'id', active: 'status' } as const;
-      const res1 = curriedRenameKeys<typeof remap2>(remap2)(obj);
+      const res1 = renameKeys<typeof remap2>(remap2)(obj);
 
       expectTypeOf(res1).toHaveProperty('id').toBeNumber();
       expectTypeOf(res1).toHaveProperty('name').toBeString();
@@ -193,8 +187,8 @@ describe('Testing narrowing', () => {
 
     test('accept exact argument types', () => {
       const remap = { _id: 'id', active: 'status' };
-      const res1 = curriedRenameKeys<{ _id: 'id'; active: 'status' }>(
-        remap as { _id: 'id'; active: 'status' }
+      const res1 = renameKeys<{ _id: 'id'; active: 'status' }>(
+        remap as { _id: 'id'; active: 'status' },
       )(obj);
       expectTypeOf(res1).toHaveProperty('id').toBeNumber();
       expectTypeOf(res1).toHaveProperty('name').toBeString();
@@ -204,9 +198,7 @@ describe('Testing narrowing', () => {
 
     test('work with partial props', () => {
       const remap = { _id: 'id', name: 'fullName' } as const;
-      const res1 = curriedRenameKeys(remap)(
-        obj as unknown as Partial<typeof obj>
-      );
+      const res1 = renameKeys(remap)(obj as unknown as Partial<typeof obj>);
       expectTypeOf(res1).toMatchTypeOf<{
         id?: number;
         fullName?: string;
@@ -216,16 +208,14 @@ describe('Testing narrowing', () => {
     });
 
     test('work with missing props', () => {
-      expectTypeOf(
-        curriedRenameKeys({ unexisting: 'status' })(obj)
-      ).toMatchTypeOf<{
+      expectTypeOf(renameKeys({ unexisting: 'status' })(obj)).toMatchTypeOf<{
         _id: number;
         name: string;
         age: number;
         active: boolean;
       }>();
       const remap = { unexisting: 'status' } as const;
-      const res1 = curriedRenameKeys(remap)(obj);
+      const res1 = renameKeys(remap)(obj);
       expectTypeOf(res1).toHaveProperty('_id').toBeNumber();
       expectTypeOf(res1).toHaveProperty('name').toBeString();
       expectTypeOf(res1).toHaveProperty('age').toBeNumber();
@@ -233,9 +223,7 @@ describe('Testing narrowing', () => {
     });
 
     test('work with both missing and present props', () => {
-      expectTypeOf(
-        curriedRenameKeys({ _id: 'id', bad: 'ff' })(obj)
-      ).toMatchTypeOf<{
+      expectTypeOf(renameKeys({ _id: 'id', bad: 'ff' })(obj)).toMatchTypeOf<{
         id: number;
         name: string;
         age: number;
@@ -245,7 +233,7 @@ describe('Testing narrowing', () => {
 
     test('work with partially props', () => {
       const remap = { unexisting: 'status', _id: 'id' } as const;
-      const res1 = curriedRenameKeys(remap)(obj);
+      const res1 = renameKeys(remap)(obj);
       expectTypeOf(res1).toHaveProperty('id').toBeNumber();
       expectTypeOf(res1).toHaveProperty('name').toBeString();
       expectTypeOf(res1).toHaveProperty('age').toBeNumber();
@@ -256,12 +244,10 @@ describe('Testing narrowing', () => {
       enum emap {
         _id = 'id',
       }
-      expectTypeOf(curriedRenameKeys(emap)({ _id: 1 }))
+      expectTypeOf(renameKeys(emap)({ _id: 1 }))
         .toHaveProperty(emap._id)
         .toBeNumber();
-      expectTypeOf(curriedRenameKeys(emap)(obj))
-        .toHaveProperty(emap._id)
-        .toBeNumber();
+      expectTypeOf(renameKeys(emap)(obj)).toHaveProperty(emap._id).toBeNumber();
     });
 
     test('work with enums and records', () => {
@@ -269,10 +255,10 @@ describe('Testing narrowing', () => {
         _id = 'id',
       }
       const rObj: Record<'_id', number> = { _id: 1 };
-      expectTypeOf(curriedRenameKeys(emap)({ _id: 1 } as Record<'_id', number>))
+      expectTypeOf(renameKeys(emap)({ _id: 1 } as Record<'_id', number>))
         .toHaveProperty(emap._id)
         .toBeNumber();
-      expectTypeOf(curriedRenameKeys(emap)(rObj))
+      expectTypeOf(renameKeys(emap)(rObj))
         .toHaveProperty(emap._id)
         .toBeNumber();
     });
@@ -282,7 +268,7 @@ describe('Testing narrowing', () => {
         _id: 'id',
       };
       const rObj: Record<'_id', number> = { _id: 1 };
-      const res = curriedRenameKeys(emap)(rObj);
+      const res = renameKeys(emap)(rObj);
       expectTypeOf(res).toMatchTypeOf<{
         [key: string]: number;
       }>();

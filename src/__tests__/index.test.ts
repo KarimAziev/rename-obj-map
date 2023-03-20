@@ -1,4 +1,4 @@
-import { renameKeys, curriedRenameKeys } from '..';
+import { renameKeys } from '..';
 
 describe('Testing renameKeys', () => {
   it('Should rename exact object', () => {
@@ -17,8 +17,8 @@ describe('Testing renameKeys', () => {
     expect(
       renameKeys(
         { _id: 'id', unexistingProp: 'Prop' },
-        { _id: 1234578, name: 'John' }
-      )
+        { _id: 1234578, name: 'John' },
+      ),
     ).toEqual({
       id: 1234578,
       name: 'John',
@@ -26,32 +26,30 @@ describe('Testing renameKeys', () => {
   });
   it('Should skip unexesting props', () => {
     expect(
-      renameKeys({ unexistingProp: 'Prop' }, { _id: 1234578, name: 'John' })
+      renameKeys({ unexistingProp: 'Prop' }, { _id: 1234578, name: 'John' }),
     ).toEqual({ _id: 1234578, name: 'John' });
   });
 });
 
-describe('Testing curriedRenameKeys', () => {
+describe('Testing renameKeys', () => {
   it('Should rename exact object', () => {
-    expect(curriedRenameKeys({ _id: 'id' })({ _id: 1234578 })).toEqual({
+    expect(renameKeys({ _id: 'id' })({ _id: 1234578 })).toEqual({
       id: 1234578,
     });
   });
 
   it('Should rename object and keep existing properties', () => {
-    expect(
-      curriedRenameKeys({ _id: 'id' })({ _id: 1234578, name: 'John' })
-    ).toEqual({
+    expect(renameKeys({ _id: 'id' })({ _id: 1234578, name: 'John' })).toEqual({
       id: 1234578,
       name: 'John',
     });
   });
   it('Should skip unexesting property', () => {
     expect(
-      curriedRenameKeys({ _id: 'id', unexistingProp: 'Prop' })({
+      renameKeys({ _id: 'id', unexistingProp: 'Prop' })({
         _id: 1234578,
         name: 'John',
-      })
+      }),
     ).toEqual({
       id: 1234578,
       name: 'John',
@@ -59,10 +57,10 @@ describe('Testing curriedRenameKeys', () => {
   });
   it('Should skip unexesting props', () => {
     expect(
-      curriedRenameKeys({ unexistingProp: 'Prop' })({
+      renameKeys({ unexistingProp: 'Prop' })({
         _id: 1234578,
         name: 'John',
-      })
+      }),
     ).toEqual({ _id: 1234578, name: 'John' });
   });
 });

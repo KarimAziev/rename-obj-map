@@ -46,28 +46,28 @@ renameKeys(remap, obj);
 // → infer as { id: number }
 ```
 
-### curriedRenameKeys (renameMap)→(obj)
+### renameKeys (renameMap)→(obj)
 
 Curried version of `renameKeys`.
 
 ```typescript
-import { curriedRenameKeys } from 'rename-obj-map';
+import { renameKeys } from 'rename-obj-map';
 
-const res0 = curriedRenameKeys({ _id: 'id' })({ _id: 1234578 });
+const res0 = renameKeys({ _id: 'id' })({ _id: 1234578 });
 // → { id: 1234578 }
 // → infer as { id: number }
 
 enum remapEnums {
   _id = 'id',
 }
-const res1 = curriedRenameKeys(remapEnums)({ _id: 1234578 });
+const res1 = renameKeys(remapEnums)({ _id: 1234578 });
 // → { id: 1234578 }
 // → infer as { id: number }
 
 const remap = { _id: 'id' } as const;
 const obj = { _id: 1234578 };
 
-const res2 = curriedRenameKeys(remap)(obj);
+const res2 = renameKeys(remap)(obj);
 // → { id: 1234578 }
 // → infer as { id: number }
 ```
