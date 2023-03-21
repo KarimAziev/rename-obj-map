@@ -91,8 +91,7 @@ export function renameKeys<RenameMap, Obj>(
   obj?: Obj,
 ) {
   if (arguments.length > 1) {
-    const keys = Object.keys(obj as any);
-    return keys.reduce(
+    return Object.keys(obj as any).reduce(
       (acc, key) => {
         const newName = (renameMap as any)[key as keyof RenameMap & Obj] || key;
         (acc as Record<any, any>)[newName] = (obj as Record<any, any>)[key];
@@ -109,8 +108,7 @@ export function renameKeys<RenameMap, Obj>(
     );
   } else {
     return <Obj>(obj: Obj) => {
-      const keys = Object.keys(obj as any);
-      return keys.reduce(
+      return Object.keys(obj as any).reduce(
         (acc, key) => {
           const newName =
             (renameMap as any)[key as keyof RenameMap & Obj] || key;
