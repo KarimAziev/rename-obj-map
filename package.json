@@ -1,6 +1,6 @@
 {
   "name": "rename-obj-map",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Inferrable rename object keys.",
   "unpkg": "dist/index.js",
   "module": "es/index.js",
